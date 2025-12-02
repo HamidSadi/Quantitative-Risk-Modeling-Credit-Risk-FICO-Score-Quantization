@@ -77,7 +77,7 @@ The notebook also includes:
 
 # 📄 **TASK 4 README **
 
-```markdown
+
 # 🏦 Task 4 — FICO Score Quantization & Risk Bucketing  
 ### JPMorgan Chase Quantitative Research Virtual Experience Program  
 
