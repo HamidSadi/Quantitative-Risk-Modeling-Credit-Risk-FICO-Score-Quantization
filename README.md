@@ -1,18 +1,167 @@
-📘 Quantitative Risk Modeling — Credit Risk & FICO Score QuantizationJPMC Quantitative Research Virtual Experience ProgramThis repository contains my completed solutions for Task 3 and Task 4 of the JPMorgan Chase Quantitative Research Virtual Experience Program, focused on credit risk modeling, probability of default (PD) estimation, and FICO credit score quantization techniques used in retail banking and risk analytics.📌 OverviewThe project consists of two major components:🔹 Task 3 — Credit Risk Analysis & PD Modeling🎯 Objective:Build a predictive model that estimates the Probability of Default (PD) for each borrower based on their financial characteristics.📊 Features used:IncomeTotal loans outstandingFICO scoreLoan-to-income ratioPast default historyOther customer-level features🤖 Models Implemented:Logistic RegressionRandom Forest ClassifierGradient Boosting ClassifierXGBoost (if available)📈 Analysis Performed:Feature distributionsCorrelation heatmapsROC & AUC comparisonPD calibrationError analysisExpected Loss computation:$$EL = PD \times LGD \times EAD$$LGD (Loss Given Default): 90% (10% recovery rate)EAD (Exposure At Default): Loan amount✅ Output:A clean function to predict loss:def predict_expected_loss(borrower_features):
-    """
-    Returns the expected monetary loss for a given borrower.
-    Formula: PD * LGD * EAD
-    """
-    return expected_loss
-🔹 Task 4 — Optimal FICO Score Quantization🎯 Objective:FICO scores must be converted into categorical risk buckets for modeling architectures that require discrete labels.☑ Methods Implemented:1️⃣ K-Means Quantization (Primary Method)Fast and stableMinimizes mean squared error (MSE)Uses AIC/BIC to choose optimal number of bucketsProduces continuous-to-categorical mappingProvides clean and interpretable boundariesVisuals included:FICO distribution histogramSmoothed PD vs. FICO plotAIC/BIC/MSE model selection curvesBucket boundary visualization2️⃣ Dynamic Programming Log-Likelihood Optimization (Theory Section)Dynamic programming gives globally optimal buckets by maximizing:$$LL = \sum_{i=1}^{B} \left[ k_i \ln(p_i) + (n_i - k_i)\ln(1 - p_i) \right]$$Constraints:Complexity is $O(N^2)$ to $O(N^3)$Not feasible for large datasetsNot expected to be computed fully in this program, but included for theoretical completeness.Included in the notebook:Full explanation of DP formulationOptimized pseudocodeA tiny runnable DP demo (20 rows) to illustrate the logic🧠 Key Insights⭐ From Task 3:Income, past defaults, and loan-to-income are critical PD predictors.Ensemble models generally outperform simple linear models in capturing non-linear risk factors.Expected loss estimation ties PD directly to financial risk.⭐ From Task 4:K-Means is the most practical quantization method for large datasets.DP is theoretically optimal but computationally heavy.Final bucket boundaries must be monotonic and risk-aligned to be useful for business rules.📂 Repository Structure├── Task3_Credit_Risk_Modeling.ipynb
-├── Task4_FICO_Quantization.ipynb
-├── data/
-│   └── Task 3 and 4_Loan_Data.csv
-├── README.md
-└── outputs/
-    ├── PD_model.pkl
-    ├── kmeans_bucket_map.csv
-    └── evaluation_plots/
-🚀 How to Run1️⃣ Install Requirementspip install numpy pandas scikit-learn seaborn matplotlib xgboost
-2️⃣ Launch Jupyter Notebookjupyter notebook
-3️⃣ Run All CellsOpen and run:Task3_Credit_Risk_Modeling.ipynbTask4_FICO_Quantization.ipynb🏆 About the ProgramThis work was completed as part of the
+# 🧮 Task 3 — Credit Risk Modeling & Expected Loss Prediction  
+### JPMorgan Chase Quantitative Research Virtual Experience Program  
+
+---
+
+This repository contains my solution to **Task 3**, focused on building a predictive model to estimate **Probability of Default (PD)** and compute **Expected Loss (EL)** for retail borrowers using real-world credit risk modeling techniques.
+
+---
+
+# 🎯 Objective
+
+The goal is to build a machine learning model that:
+
+1. Predicts the **Probability of Default (PD)** for a borrower  
+2. Calculates the **Expected Loss (EL)** using:
+   
+\[
+EL = PD \times LGD \times EAD
+\]
+
+Where:
+
+- **LGD** = 90% (assuming 10% recovery)
+- **EAD** = loan amount
+
+This allows the risk team to properly estimate loss allowances and capital requirements.
+
+---
+
+# 📊 Dataset
+
+The dataset includes borrower details such as:
+
+- Income  
+- FICO score  
+- Total outstanding loans  
+- Loan-to-income ratio  
+- Previous defaults  
+- Loan amount  
+- Other numerical indicators  
+
+---
+
+# 🤖 Models Implemented
+
+A full comparative analysis was performed:
+
+### ✔ Logistic Regression  
+### ✔ Random Forest Classifier  
+### ✔ Gradient Boosting Classifier  
+### ✔ XGBoost Classifier (optional if installed)
+
+These models were evaluated using:
+
+- ROC Curves  
+- AUC Score  
+- Confusion Matrix  
+- PD Calibration Plots  
+- Feature Importance  
+
+---
+
+# 📈 Visual Analysis
+
+The notebook also includes:
+
+- Correlation heatmap  
+- Borrower distribution visualizations  
+- PD distribution  
+- Feature pair plots  
+- Model comparison charts  
+
+---
+
+# 🛠 Final Output
+
+A callable function:
+
+```python
+predict_expected_loss(borrower_features)
+
+
+
+
+
+---
+
+# 📄 **TASK 4 README **
+
+```markdown
+# 🏦 Task 4 — FICO Score Quantization & Risk Bucketing  
+### JPMorgan Chase Quantitative Research Virtual Experience Program  
+
+---
+
+This repository contains my solution to **Task 4**, focused on converting continuous **FICO credit scores** into **risk buckets** for downstream machine learning models in retail credit risk.
+
+---
+
+# 🎯 Objective
+
+Machine learning models often require categorical labels rather than continuous credit scores. Therefore, this task aims to:
+
+- Derive optimal **bucket boundaries** for FICO scores  
+- Maintain **monotonicity** with respect to default risk  
+- Minimize predictive error or maximize likelihood  
+- Provide a reusable bucket mapping method  
+
+---
+
+# 🔍 Methods Implemented
+
+## 1️⃣ **K-Means Quantization (Primary Method)**  
+A practical and efficient approach used in real-world scorecard modeling.
+
+### ✔ Minimizes Mean Squared Error (MSE)  
+### ✔ AIC/BIC used to determine optimal number of buckets  
+### ✔ Automatically extracts bucket boundaries  
+### ✔ Produces interpretable risk categories  
+
+### Visuals Included:
+- FICO histogram  
+- Smoothed PD vs. FICO  
+- MSE / AIC / BIC charts  
+- Bucket boundary overlay  
+
+---
+
+## 2️⃣ **Dynamic Programming Log-Likelihood Method — Theory Only**
+
+DP produces the *optimal* bucket boundaries by maximizing:
+
+\[
+LL = \sum_{i=1}^{B} [ k_i \ln(p_i) + (n_i - k_i)\ln(1 - p_i) ]
+\]
+
+However:
+
+- Complexity is **O(N²–N³)**
+- Not feasible for large datasets
+- Not required for the final result  
+
+The notebook includes:
+
+### ✔ Full derivation  
+### ✔ Explanation of computational limits  
+### ✔ Optimized pseudocode  
+### ✔ A tiny DP demo on a small sample (20 rows)  
+
+---
+
+# 📦 Final Deliverables
+
+### ✔ K-Means Boundary Extraction  
+### ✔ Bucket Mapping Function  
+### ✔ PD distribution per bucket  
+### ✔ Comparison of quantization methods  
+### ✔ Complete documentation  
+
+---
+
+# 🚀 How to Run
+
+Install dependencies:
+
+```bash
+pip install numpy pandas scikit-learn seaborn matplotlib
