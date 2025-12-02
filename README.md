@@ -72,16 +72,6 @@ The notebook also includes:
 
 ---
 
-# 🛠 Final Output
-
-A callable function:
-
-```python
-predict_expected_loss(borrower_features)
-
-
-
-
 
 ---
 
